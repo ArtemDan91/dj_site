@@ -3,23 +3,35 @@ from django.shortcuts import render, redirect
 
 from .models import *
 
-menu = ['Про сайт', 'Додати статтю', 'Зворотній звязок', 'Увійти']
+menu = [{'title': "Головна Сторінка", 'url_name': 'home'},
+        {'title': "Про сайт", 'url_name': 'about'},
+        {'title': "Додати статтю", 'url_name': 'add_page'},
+        {'title': "Зворотній зв'язок", 'url_name': 'contact'},
+        {'title': "Увійти", 'url_name': 'login'}
+]
 def index(request):
     posts = Women.objects.all()
-    return render(request, 'women/index.html', {'posts': posts, 'menu': menu, 'title': 'Головна сторінка'})
+    context = {
+        'posts': posts,
+        'menu': menu,
+        'title': 'Главная страница'
+    }
+    return render(request, 'women/index.html', context=context)
 
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Про сайт'})
 
-def categories(request, id):
-    if (request.GET):
-        print(request.GET)
-    return HttpResponse(f"<h1>Статті по категоріям</h1><p>{id}</p>")
+def addpage(request):
+    return HttpResponse("Додання статті")
 
-def archive(request, year):
-    if int(year) > 2023:
-        return redirect('home', permanent=True)
-    return HttpResponse(f"<h1>Статті по категоріям</h1><p>{year}</p>")
+def contact(request):
+    return HttpResponse("Зворотній зв'язок")
+
+def login(request):
+    return HttpResponse("Авторизація")
+
+def show_post(request, post_id):
+    return HttpResponse(f"Відображення статті з id = {post_id}")
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
