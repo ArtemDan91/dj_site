@@ -9,6 +9,7 @@ menu = [{'title': "Головна Сторінка", 'url_name': 'home'},
         {'title': "Зворотній зв'язок", 'url_name': 'contact'},
         {'title': "Увійти", 'url_name': 'login'}
 ]
+
 def index(request):
     posts = Women.objects.all()
     context = {
