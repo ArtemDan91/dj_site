@@ -31,11 +31,19 @@
 <!-- Sidebar зліва -->
 	<td valign="top" class="left-chapters">
 	<ul id="leftchapters">
-		<li class="selected">Всі категорії</li>
-		<li><a href="#">Актриси</a></li>
-		<li><a href="#">Співачки</a></li>
-		<li><a href="#">Спортсменки</a></li>
+		{% if cat_selected == 0 %}
+			<li class="selected">Всі категорії</li> 
+		{% else %}
+			<li><a href="{% url 'home' %}">Всі категорії</a></li>
+		{% endif %}
 		
+		{% for c in cats %}
+			{% if c.pk == cat_selected %}
+				<li class="selected">{{c.name}}</li>
+			{% else %}
+				<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+			{% endif %}
+		{% endfor %}
 	</ul>
 </td>
 <!-- Кінець Sidebar'а -->
