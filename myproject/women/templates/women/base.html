@@ -1,17 +1,64 @@
+{% load static %}
 <!DOCTYPE html>
+<html>
 <head>
-	<meta charset="UTF-8">
 	<title>{{title}}</title>
+	<link type="text/css" href="{% static 'women/css/styles.css' %}" rel="stylesheet" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>
 {% block mainmenu %}
-	<ul>
-		{% for m in menu %}
-			<li>{{m}}</li>
-		{% endfor %}
+		<div class="header">
+			<ul id="mainmenu" class="mainmenu">
+				{% for m in menu %}
+					{% if not forloop.last %}
+							<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+					{% else %}
+							<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
+
+
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+<!-- Sidebar зліва -->
+	<td valign="top" class="left-chapters">
+	<ul id="leftchapters">
+		<li class="selected">Всі категорії</li>
+		<li><a href="#">Актриси</a></li>
+		<li><a href="#">Співачки</a></li>
+		<li><a href="#">Спортсменки</a></li>
+		
 	</ul>
-{% endblock %}
+</td>
+<!-- Кінець Sidebar'а -->
+<td valign="top" class="content">
+	<!-- Хлебные крошки -->
+	{% block breadcrumbs %}
+	{% endblock %}
+
+<!-- Блок контента -->
+	<div class="content-text">
 {% block content %}
 {% endblock %}
+	</div>
+<!-- Кінець блоку контента -->
+
+</td></tr></table>
+</td></tr>
+<!-- Footer -->
+<tr><td valign=top>
+	<div id="footer">
+		<p>&copy; 2023 </p>
+	</div>
+</td></tr></table>
+<!-- Кінець footer'а і сторінки -->
 </body>
 </html>
