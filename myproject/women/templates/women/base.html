@@ -16,12 +16,9 @@
 		<div class="header">
 			<ul id="mainmenu" class="mainmenu">
 				{% for m in menu %}
-					{% if not forloop.last %}
-							<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-					{% else %}
-							<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
-					{% endif %}
+					<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
 				{% endfor %}
+				<li class="last"><a href="{% url 'register' %}">Реєстрація</a> | <a href="{% url 'login' %}">Увійти</a></li>
 			</ul>
 			<div class="clear"></div>
 		</div>
@@ -62,9 +59,35 @@
 	<div class="content-text">
 {% block content %}
 {% endblock %}
-	</div>
-<!-- Кінець блоку контента -->
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+{% if page_obj.has_previous %}
+<li class="page-num">
+	<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+</li>
+{% endif %}
 
+        {% for p in paginator.page_range %}
+		{% if page_obj.number == p %}
+        <li class="page-num page-num-selected">{{ p }}</li>
+		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+        <li class="page-num">
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+		{% endif %}
+        {% endfor %}
+
+{% if page_obj.has_next %}
+<li class="page-num">
+	<a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+</li>
+{% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+</div>
 </td></tr></table>
 </td></tr>
 <!-- Footer -->
