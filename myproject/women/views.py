@@ -22,7 +22,7 @@ class WomenHome(DataMixin, ListView):
         context_def = self.get_user_context(title='Головна сторінка')
         return context | context_def
     def get_queryset(self):
-        return Women.objects.filter(is_published=True)
+        return Women.objects.filter(is_published=True).select_related('cat')
 
 # def index(request):
 #     posts = Women.objects.all()
@@ -102,12 +102,13 @@ class WomenCategory(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Категорія - ' + str(context['posts'][0].cat), cat_selected=self.kwargs['cat_slug'])
+        c = Category.objects.get(slug=self.kwargs['cat_slug'])
+        context_def = self.get_user_context(title='Категорія - ' + str(c.name), cat_selected=self.kwargs['cat_slug'])
         return context | context_def
 
 
     def get_queryset(self):
-        return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True)
+        return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).select_related('cat')
 
 # def show_category(request, cat_slug):
 #     posts = Women.objects.filter(cat__slug=cat_slug)
