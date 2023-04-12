@@ -1,4 +1,6 @@
+from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -68,9 +70,6 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
 def contact(request):
     return HttpResponse("Зворотній зв'язок")
 
-def login(request):
-    return HttpResponse("Авторизація")
-
 
 class ShowPost(DataMixin, DetailView):
     model = Women
@@ -134,6 +133,32 @@ class RegisterUser(DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context_def = self.get_user_context(title='Реєстрація')
         return context | context_def
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
+
+
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'women/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context_def = self.get_user_context(title='Авторизація')
+        return context | context_def
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+# def login(request):
+#     return HttpResponse("Авторизація")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 def pageNotFound(request, exception):
