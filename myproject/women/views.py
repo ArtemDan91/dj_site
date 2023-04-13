@@ -6,12 +6,27 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .forms import *
 from .models import *
 from .utils import *
+from .serializers import *
 
 
+class WomenAPIView(APIView):
+    def get(self, request):
+        lst = Women.objects.all().values()
+        return Response({'posts': list(lst)})
+
+    def post(self, request):
+        return Response({'title': 'Jennifer Lawrence'})
+
+# class WomenAPIView(generics.ListAPIView):
+#     queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
 
 
 class WomenHome(DataMixin, ListView):
