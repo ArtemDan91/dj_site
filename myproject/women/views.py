@@ -12,6 +12,8 @@ from .models import *
 from .utils import *
 
 
+
+
 class WomenHome(DataMixin, ListView):
     model = Women
     template_name = 'women/index.html'
