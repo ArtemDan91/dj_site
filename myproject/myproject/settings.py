@@ -142,3 +142,10 @@ CACHES = {
         "LOCATION": os.path.join(BASE_DIR, 'myproject_cache'),
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer', #управляє доступом до браузерного API
+    ]
+}
