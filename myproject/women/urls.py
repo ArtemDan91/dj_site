@@ -6,6 +6,7 @@ from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'women', WomenVeiwSet, basename='women')
+print(router.urls)
 
 
 urlpatterns = [
