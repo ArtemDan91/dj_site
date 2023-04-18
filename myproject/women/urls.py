@@ -4,14 +4,15 @@ from django.views.decorators.cache import cache_page
 from rest_framework import routers
 
 
-router = routers.SimpleRouter()
-router.register(r'women', WomenVeiwSet, basename='women')
-print(router.urls)
+# router = routers.SimpleRouter()
+# router.register(r'women', WomenVeiwSet, basename='women')
+# print(router.urls)
 
 
 urlpatterns = [
     # path('', index, name='home'),
     path('', WomenHome.as_view(), name='home'),
+    path('api/v1/drf-auth', include('rest_framework.urls')),
     path('about/', WomenAbout.as_view(), name='about'),
     path('addpage/', AddPage.as_view(), name='add_page'),
     path('contact/', ContactFormView.as_view(), name='contact'),
@@ -24,9 +25,9 @@ urlpatterns = [
     # path('api/v1/womenlist/', WomenAPIView.as_view()),
     # path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
 
-    # path('api/v1/womenlist/', WomenAPIList.as_view()),
-    # path('api/v1/womenlist/<int:pk>/', WomenAPIUpdate.as_view()),
-    # path('api/v1/womendetail/<int:pk>/', WomenAPIDetailView.as_view()),
+    path('api/v1/women/', WomenAPIList.as_view()),
+    path('api/v1/women/<int:pk>/', WomenAPIUpdate.as_view()),
+    path('api/v1/womendelete/<int:pk>/', WomenAPIDestroy.as_view()),
 
-    path('api/v1/', include(router.urls)), #http://127.0.0.1:8000/api/v1/women/
+    # path('api/v1/', include(router.urls)), #http://127.0.0.1:8000/api/v1/women/
 ]

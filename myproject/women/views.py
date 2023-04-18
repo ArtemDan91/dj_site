@@ -1,53 +1,51 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.core.paginator import Paginator
-from django.forms import model_to_dict
-from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseNotFound
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView
-from rest_framework import generics, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .forms import *
-from .models import *
+from women.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .utils import *
 from .serializers import *
 
 
-class WomenVeiwSet(viewsets.ModelViewSet):
-    #queryset = Women.objects.all()
+# class WomenVeiwSet(viewsets.ModelViewSet):
+#     #queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
+#
+#     def get_queryset(self):
+#         pk = self.kwargs.get('pk')
+#         if not pk:
+#             return Women.objects.all()[:3]
+#         else:
+#             return Women.objects.filter(pk=pk)
+#
+#     @action(methods=['get'], detail=True)
+#     def category(self, request, pk=None):
+#         cats = Category.objects.get(pk=pk)
+#         return Response({'cats': cats.name})
+
+
+class WomenAPIList(generics.ListCreateAPIView):
+    queryset = Women.objects.all()
     serializer_class = WomenSerializer
-
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if not pk:
-            return Women.objects.all()[:3]
-        else:
-            return Women.objects.filter(pk=pk)
-
-    @action(methods=['get'], detail=True)
-    def category(self, request, pk=None):
-        cats = Category.objects.get(pk=pk)
-        return Response({'cats': cats.name})
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-# class WomenAPIList(generics.ListCreateAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
-#
-#
-# class WomenAPIUpdate(generics.UpdateAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
-#
-#
-# class WomenAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
+class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+class WomenAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+    permission_classes = (IsAdminOrReadOnly, )
 
 
 # class WomenAPIView(APIView):

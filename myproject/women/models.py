@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Women(models.Model):
@@ -11,6 +12,7 @@ class Women(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name='Час внесення змін')
     is_published = models.BooleanField(default=True, verbose_name='Публікація')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категорія')
+    user = models.ForeignKey(User, verbose_name='Користувач', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
