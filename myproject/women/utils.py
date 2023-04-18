@@ -17,7 +17,7 @@ class DataMixin:
         context = kwargs
         cats = cache.get('cats')
         if not cats:
-            cats = Category.objects.annotate(total=Count('women'))
+            cats = Category.objects.annotate(Count('women'))
             cache.set('cats', cats, 60)
 
         user_menu = menu.copy()

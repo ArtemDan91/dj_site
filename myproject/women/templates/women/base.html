@@ -48,8 +48,8 @@
 		
 		<!-- {% show_categories cat_selected %}  inclusion тег -->
 		{% for c in cats %}
-		{% if c.total > 0 %}
-			{% if c.slug == cat_selected %}
+		{% if c.women__count > 0 %}
+			{% if c.pk == cat_selected %}
 				<li class="selected">{{c.name}}</li>
 			{% else %}
 				<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>

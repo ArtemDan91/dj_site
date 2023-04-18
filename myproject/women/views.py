@@ -115,13 +115,16 @@ class WomenHome(DataMixin, ListView):
 #     }
 #     return render(request, 'women/index.html', context=context)
 
-def about(request):
-    contact_list = Women.objects.all()
-    paginator = Paginator(contact_list, 3)
 
-    page_name = request.GET.get('page')
-    page_obj = paginator.get_page(page_name)
-    return render(request, 'women/about.html', {'page_obj': page_obj, 'menu': menu, 'title': 'Про сайт'})
+class WomenAbout(DataMixin, ListView):
+    model = Women
+    template_name = 'women/about.html'
+    paginate_by = None
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context_def = self.get_user_context(title='Про сайт')
+        return context | context_def
 
 
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):

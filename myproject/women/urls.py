@@ -12,7 +12,7 @@ print(router.urls)
 urlpatterns = [
     # path('', index, name='home'),
     path('', WomenHome.as_view(), name='home'),
-    path('about/', about, name='about'),
+    path('about/', WomenAbout.as_view(), name='about'),
     path('addpage/', AddPage.as_view(), name='add_page'),
     path('contact/', ContactFormView.as_view(), name='contact'),
     path('login/', LoginUser.as_view(), name='login'),
