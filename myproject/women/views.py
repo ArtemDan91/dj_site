@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView, FormView
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, \
     SessionAuthentication
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, \
     IsAuthenticated
 
@@ -34,17 +35,22 @@ from .serializers import *
 #         return Response({'cats': cats.name})
 
 
+class WomenAPIListPagination(PageNumberPagination):
+    page_size = 3
+
+
 class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
+    pagination_class = WomenAPIListPagination
 
 
 class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
     permission_classes = (IsAuthenticated, )
-    authentication_classes = (TokenAuthentication, ) #доступ лише по токенам
+    # authentication_classes = (TokenAuthentication, ) #доступ лише по токенам
 
 class WomenAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Women.objects.all()
