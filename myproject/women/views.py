@@ -6,7 +6,10 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.authentication import TokenAuthentication, \
+    SessionAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, \
+    IsAuthenticated
 
 from .forms import *
 from women.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
@@ -40,7 +43,8 @@ class WomenAPIList(generics.ListCreateAPIView):
 class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication, ) #доступ лише по токенам
 
 class WomenAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Women.objects.all()

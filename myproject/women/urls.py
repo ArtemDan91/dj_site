@@ -12,7 +12,9 @@ from rest_framework import routers
 urlpatterns = [
     # path('', index, name='home'),
     path('', WomenHome.as_view(), name='home'),
-    path('api/v1/drf-auth', include('rest_framework.urls')),
+    path('api/v1/drf-auth', include('rest_framework.urls')), #session_based auth
+    path('api/v1/auth/', include('djoser.urls')), #token_based auth
+    re_path(r'^auth/', include('djoser.urls.authtoken')), #авторизація по токенам
     path('about/', WomenAbout.as_view(), name='about'),
     path('addpage/', AddPage.as_view(), name='add_page'),
     path('contact/', ContactFormView.as_view(), name='contact'),
